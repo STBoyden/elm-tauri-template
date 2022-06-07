@@ -32,6 +32,6 @@ install tauri-cli --locked --version "^1.0.0-rc"`[[1]](#1), which itself require
 installed (which you should have anyway since you're trying to use Tauri).
 
 <br >
-<div id="#1></div>
+<div id="#1"></div>
 
 1: The version may be omitted when the "1.x.y" full version of Tauri is released.
