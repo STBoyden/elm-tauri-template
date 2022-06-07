@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="elm-content" />
+    <script src="bundle.js"></script>
+    <script src="elm.js"></script>
+    <script>
+      const invoke = window.__TAURI__.invoke;
+
+      var app = Elm.Main.init({
+        node: document.getElementById("elm-content"),
+        flags: { initialValue: 0 },
+      });
+
+      app.ports?.invokeFunction.subscribe(function (f) {
+        invoke(f.name, f.args).then((res) => app.ports?.addMessage.send(res));
+      });
+    </script>
+  </body>
+</html>
