@@ -41,7 +41,13 @@ toArgs : List ( String, String ) -> E.Value
 toArgs list =
     let
         args =
-            List.map (\item -> ( Tuple.first item, E.string (Tuple.second item) )) list
+            List.map
+                (\item ->
+                    ( Tuple.first item
+                    , E.string (Tuple.second item)
+                    )
+                )
+                list
     in
     E.object <| args
 
@@ -50,19 +56,44 @@ update : Msg String String -> Model -> ( Model, Cmd msg )
 update msg model =
     case msg of
         Increment ->
-            ( { model | value = model.value + 1, messages = model.messages }, Cmd.none )
+            ( { model
+                | value = model.value + 1
+                , messages = model.messages
+              }
+            , Cmd.none
+            )
 
         Decrement ->
-            ( { model | value = model.value - 1, messages = model.messages }, Cmd.none )
+            ( { model
+                | value = model.value - 1
+                , messages = model.messages
+              }
+            , Cmd.none
+            )
 
         InvokeFunction functionName functionArgs ->
-            ( model, invokeFunction { name = functionName, args = toArgs (Dict.toList functionArgs) } )
+            ( model
+            , invokeFunction
+                { name = functionName
+                , args = toArgs (Dict.toList functionArgs)
+                }
+            )
 
         ClearMessages ->
-            ( { model | value = model.value, messages = [] }, Cmd.none )
+            ( { model
+                | value = model.value
+                , messages = []
+              }
+            , Cmd.none
+            )
 
         GetMessage str ->
-            ( { model | value = model.value, messages = model.messages ++ [ str ] }, Cmd.none )
+            ( { model
+                | value = model.value
+                , messages = model.messages ++ [ str ]
+              }
+            , Cmd.none
+            )
 
 
 subscriptions : Model -> Sub (Msg k v)
@@ -86,10 +117,16 @@ view model =
                 , button [ onClick Decrement ] [ text "-" ]
                 ]
             , br [] []
-            , button [ onClick (InvokeFunction "info" Dict.empty) ] [ text "Get info from Rust" ]
-            , button [ onClick ClearMessages ] [ text "Clear messages" ]
+            , button
+                [ onClick (InvokeFunction "info" Dict.empty) ]
+                [ text "Get info from Rust" ]
+            , button
+                [ onClick ClearMessages ]
+                [ text "Clear messages" ]
             , br [] []
-            , div [] (List.map (\message -> ul [] [ li [] [ text message ] ]) model.messages)
+            , div
+                []
+                (List.map (\message -> ul [] [ li [] [ text message ] ]) model.messages)
             ]
         ]
     }
@@ -97,4 +134,9 @@ view model =
 
 main : Program Flags Model (Msg String String)
 main =
-    Browser.document { init = init, subscriptions = subscriptions, update = update, view = view }
+    Browser.document
+        { init = init
+        , subscriptions = subscriptions
+        , update = update
+        , view = view
+        }
